@@ -1119,7 +1119,7 @@ td code {
   font-size: 0.9rem;
 }
 
-/* Плавное раскрытие ответа — анимация только max-height; padding постоянный */
+/* Плавное раскрытие ответа — анимация только max-height; нижний отступ постоянный (скрывается через border-box) */
 .faq details .faq__answer {
   display: block;
   overflow: hidden;
