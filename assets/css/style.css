@@ -1225,18 +1225,12 @@ td code {
 
 /* ================= Сияние, шлейф и курсор ================= */
 @media (hover: hover) and (pointer: fine) {
-  body,
-  a,
-  button,
-  .btn,
-  input,
-  select,
-  textarea,
-  label,
-  summary {
-    cursor: none;
+  * {
+cursor: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cdefs%3E%3Cfilter%20id%3D'g'%20x%3D'-60%25'%20y%3D'-60%25'%20width%3D'220%25'%20height%3D'220%25'%3E%3CfeGaussianBlur%20stdDeviation%3D'1.4'%20result%3D'b'%2F%3E%3CfeMerge%3E%3CfeMergeNode%20in%3D'b'%2F%3E%3CfeMergeNode%20in%3D'SourceGraphic'%2F%3E%3C%2FfeMerge%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D'url(%23g)'%3E%3Cpath%20fill%3D'%237fb4ff'%20stroke%3D'%231e6fe0'%20stroke-width%3D'1.6'%20stroke-linejoin%3D'round'%20d%3D'M5%201.5%20L19%2010.8%20H12.6%20L16.4%2019%20L14.2%2020.4%20L8.4%2012.4%20L5%2016.5%20Z'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 2 2, auto;
   }
 }
+
+/* ---- шлейф: большой, мягкий, самый медленный ---- */
 
 /* ---- шлейф: большой, мягкий, самый медленный ---- */
 .cursor-trail {
@@ -1364,44 +1358,6 @@ td code {
   }
 }
 
-/* ---- кастомный курсор в стиле сайта ---- */
-.cursor-dot,
-.cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0;
-  border-radius: 50%;
-  will-change: transform;
-}
-
-.cursor-dot {
-  width: 8px;
-  height: 8px;
-  margin: -4px 0 0 -4px;
-  background: #7fb4ff;
-  box-shadow: 0 0 12px rgba(74, 147, 255, 0.8);
-  transition: opacity 0.25s ease;
-}
-
-.cursor-ring {
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px;
-  border: 2px solid rgba(90, 160, 250, 0.7);
-  transition: opacity 0.25s ease, border-color 0.2s ease;
-}
-
-.cursor-dot.is-visible,
-.cursor-ring.is-visible {
-  opacity: 0.9;
-}
-
-.cursor-ring.is-active {
-  border-color: #bfe0ff;
-}
 
 @media (prefers-reduced-motion: reduce) {
   .cursor-glow::before,
