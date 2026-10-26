@@ -819,6 +819,53 @@ a {
   margin-top: 16px;
 }
 
+/* Подсказка на кнопке «Запросить полную версию» */
+.btn-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  transform: translateX(-50%) translateY(6px);
+  max-width: 280px;
+  width: max-content;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--accent-line);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: center;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+  z-index: 30;
+}
+
+.btn-tip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--accent-line);
+}
+
+a[data-tooltip] {
+  position: relative;
+}
+
+a[data-tooltip]:hover .btn-tip,
+a[data-tooltip]:focus-visible .btn-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
 .dl-note {
   margin-top: 26px;
   padding: 18px 22px;

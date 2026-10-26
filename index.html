@@ -357,8 +357,9 @@
               <li>Синхронизация баз и встроенный сервер связи</li>
               <li>Импорт и экспорт XLSX</li>
             </ul>
-            <a class="btn btn--primary btn--block" href="mailto:Daniloff.Wasily@yandex.ru?subject=Запрос%20полной%20версии%20TTK%20Label%20Maker">
-              Запросить полную версию
+            <a class="btn btn--primary btn--block contact-link--copy" data-copy="Daniloff.Wasily@yandex.ru" data-copy-label="E-mail скопирован" href="mailto:Daniloff.Wasily@yandex.ru?subject=Запрос%20полной%20версии%20TTK%20Label%20Maker" data-tooltip="Напишите нам. Кликните для копирования в буфер обмена адреса электронной почты">
+              <span class="btn__text">Запросить полную версию</span>
+              <span class="btn-tip" role="tooltip">Напишите нам. Кликните для копирования в буфер обмена адреса электронной почты</span>
             </a>
             <div class="dl__file">
               <span>Установщик выдаётся по запросу</span>
@@ -807,6 +808,11 @@
         link.addEventListener('click', function (e) {
           var text = link.getAttribute('data-copy') || '';
           var label = link.getAttribute('data-copy-label') || 'Скопировано';
+
+          // Кнопка «Запросить полную версию»: клик копирует адрес, а не открывает почтовик
+          if (link.hasAttribute('data-tooltip')) {
+            e.preventDefault();
+          }
 
           function copied() {
             showCopyToast(e, label);
