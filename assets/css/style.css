@@ -1232,6 +1232,40 @@ td code {
   color: var(--muted);
 }
 
+.footer__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  margin-top: 18px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.footer__stat {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 90px;
+}
+
+.footer__stat-num {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent-2);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.footer__stat-lbl {
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
 /* ================= Наверх ================= */
 .to-top {
   position: fixed;

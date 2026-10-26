@@ -682,6 +682,21 @@
         <span>© 2026 TTK Label Maker. Все права защищены.</span>
         <span>Этикетки соответствуют ТР ТС 022/2011, СанПиН и ГОСТ</span>
       </div>
+
+      <div class="footer__stats" id="footerStats" aria-label="Статистика посещений">
+        <span class="footer__stat">
+          <b class="footer__stat-num" data-k="today">–</b>
+          <span class="footer__stat-lbl">За сегодня</span>
+        </span>
+        <span class="footer__stat">
+          <b class="footer__stat-num" data-k="month">–</b>
+          <span class="footer__stat-lbl">За месяц</span>
+        </span>
+        <span class="footer__stat">
+          <b class="footer__stat-num" data-k="total">–</b>
+          <span class="footer__stat-lbl">Всего</span>
+        </span>
+      </div>
     </div>
   </footer>
 
@@ -886,6 +901,51 @@
           }
         });
       });
+    })();
+  </script>
+
+  <script>
+    // Статистика посещений из Яндекс.Метрики (API)
+    (function () {
+      var CID = '113812879';
+      var TOKEN = 'y0__wgBEJ-TziwY8dtNIJLzoMUZBxt44lhW3Wht_YZVXOSJeooBLZM';
+      var box = document.getElementById('footerStats');
+      if (!box) return;
+
+      function fmt(n) {
+        n = Math.round(n || 0);
+        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      }
+
+      function set(key, val) {
+        var el = box.querySelector('[data-k="' + key + '"]');
+        if (el) el.textContent = fmt(val);
+      }
+
+      function load() {
+        var urlToday = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
+          '&metrics=ym:s:visits&date1=today&date2=today';
+        var d1 = new Date();
+        d1.setDate(d1.getDate() - 30);
+        var d1s = d1.toISOString().slice(0, 10);
+        var urlMonth = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
+          '&metrics=ym:s:visits&date1=' + d1s + '&date2=today';
+        var urlTotal = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
+          '&metrics=ym:s:visits&date1=2026-01-01&date2=today';
+
+        function get(u, cb) {
+          fetch(u, { headers: { 'Authorization': 'OAuth ' + TOKEN } })
+            .then(function (r) { return r.json(); })
+            .then(function (j) { cb((j && j.totals) ? j.totals[0] : 0); })
+            .catch(function () { cb(0); });
+        }
+
+        get(urlToday, function (v) { set('today', v); });
+        get(urlMonth, function (v) { set('month', v); });
+        get(urlTotal, function (v) { set('total', v); });
+      }
+
+      load();
     })();
   </script>
 
