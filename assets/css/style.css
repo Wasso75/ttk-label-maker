@@ -529,6 +529,10 @@ a {
   gap: 20px;
 }
 
+.cards--contacts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .card {
   padding: 28px 24px;
   background: var(--surface);
@@ -973,9 +977,19 @@ td code {
   text-decoration: underline;
 }
 
+.card__person {
+  margin-bottom: 6px;
+  color: #dce9ff;
+  font-size: 0.87rem;
+  font-weight: 700;
+}
+
 .contacts__cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
   margin-top: 30px;
-  text-align: center;
 }
 
 /* ================= FAQ ================= */
@@ -1197,7 +1211,8 @@ td code {
 
   .modules,
   .steps,
-  .downloads {
+  .downloads,
+  .cards--contacts {
     grid-template-columns: 1fr;
   }
 
