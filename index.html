@@ -12,7 +12,7 @@
   <meta property="og:description" content="Печать этикеток и технологических карт прямо со смартфона. Готовые базы с нормами хранения, QR-код, Bluetooth-печать, Windows-редактор баз.">
   <meta property="og:image" content="assets/img/app-icon.png">
   <link rel="icon" type="image/png" href="assets/img/app-icon.png">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261026b">
 </head>
 <body>
 
@@ -664,7 +664,10 @@
 
   <button class="to-top" id="toTop" type="button" aria-label="Наверх">↑</button>
 
+  <div class="cursor-trail" id="cursorTrail" aria-hidden="true"></div>
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 
   <script>
     (function () {
@@ -708,20 +711,39 @@
         });
       });
 
-      // Сияние, следующее за курсором
+      // Сияние, шлейф и кастомный курсор
       var glow = document.getElementById('cursorGlow');
-      var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var trail = document.getElementById('cursorTrail');
+      var dot = document.getElementById('cursorDot');
+      var ring = document.getElementById('cursorRing');
       var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-      if (glow && fine) {
-        var tx = 0, ty = 0, cx = 0, cy = 0, raf = null, alive = false;
+      if (glow && trail && fine) {
+        var tx = 0, ty = 0;
+        // текущие позиции с разной инерцией: шлейф самый медленный, точка самая быстрая
+        var s = { x: 0, y: 0 }, c = { x: 0, y: 0 }, d = { x: 0, y: 0 }, r = { x: 0, y: 0 };
+        var raf = null, alive = false;
 
         var move = function () {
-          cx += (tx - cx) * (calm ? 1 : 0.16);
-          cy += (ty - cy) * (calm ? 1 : 0.16);
-          glow.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+          var k1 = calm ? 1 : 0.07;   // шлейф
+          var k2 = calm ? 1 : 0.18;   // ядро
+          var k3 = calm ? 1 : 0.5;    // кольцо
+          var k4 = calm ? 1 : 1;      // точка мгновенно
 
-          if (Math.abs(tx - cx) > 0.4 || Math.abs(ty - cy) > 0.4) {
+          s.x += (tx - s.x) * k1; s.y += (ty - s.y) * k1;
+          c.x += (tx - c.x) * k2; c.y += (ty - c.y) * k2;
+          r.x += (tx - r.x) * k3; r.y += (ty - r.y) * k3;
+          d.x = tx; d.y = ty;
+
+          trail.style.transform = 'translate3d(' + s.x.toFixed(1) + 'px,' + s.y.toFixed(1) + 'px,0)';
+          glow.style.transform = 'translate3d(' + c.x.toFixed(1) + 'px,' + c.y.toFixed(1) + 'px,0)';
+          ring.style.transform = 'translate3d(' + r.x.toFixed(1) + 'px,' + r.y.toFixed(1) + 'px,0)';
+          dot.style.transform = 'translate3d(' + d.x.toFixed(1) + 'px,' + d.y.toFixed(1) + 'px,0)';
+
+          if (Math.abs(tx - s.x) > 0.3 || Math.abs(ty - s.y) > 0.3 ||
+              Math.abs(tx - c.x) > 0.3 || Math.abs(ty - c.y) > 0.3 ||
+              Math.abs(tx - r.x) > 0.3 || Math.abs(ty - r.y) > 0.3) {
             raf = requestAnimationFrame(move);
           } else {
             raf = null;
@@ -731,28 +753,38 @@
         var start = function () {
           if (!alive) {
             alive = true;
-            cx = tx;
-            cy = ty;
+            s.x = s.y = c.x = c.y = r.x = r.y = d.x = d.y = 0;
           }
+          trail.classList.add('is-visible');
           glow.classList.add('is-visible');
+          dot.classList.add('is-visible');
+          ring.classList.add('is-visible');
           if (raf === null) {
             raf = requestAnimationFrame(move);
           }
         };
 
+        var stop = function () {
+          trail.classList.remove('is-visible');
+          glow.classList.remove('is-visible');
+          dot.classList.remove('is-visible');
+          ring.classList.remove('is-visible');
+        };
+
         document.addEventListener('mousemove', function (e) {
           tx = e.clientX;
           ty = e.clientY;
+          var el = document.elementFromPoint(tx, ty);
+          if (el && el.closest) {
+            var clickable = el.closest('a, button, .btn, input, select, textarea, label, summary, [data-file]');
+            ring.classList.toggle('is-active', !!clickable);
+          }
           start();
         }, { passive: true });
 
-        document.addEventListener('mouseleave', function () {
-          glow.classList.remove('is-visible');
-        });
-
-        window.addEventListener('blur', function () {
-          glow.classList.remove('is-visible');
-        });
+        document.addEventListener('touchstart', stop, { passive: true });
+        document.addEventListener('mouseleave', stop);
+        window.addEventListener('blur', stop);
       }
     })();
   </script>

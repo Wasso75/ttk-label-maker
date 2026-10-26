@@ -1223,24 +1223,68 @@ td code {
   display: flex;
 }
 
-/* ================= Сияние под курсором ================= */
+/* ================= Сияние, шлейф и курсор ================= */
+@media (hover: hover) and (pointer: fine) {
+  body,
+  a,
+  button,
+  .btn,
+  input,
+  select,
+  textarea,
+  label,
+  summary {
+    cursor: none;
+  }
+}
+
+/* ---- шлейф: большой, мягкий, самый медленный ---- */
+.cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 640px;
+  height: 640px;
+  margin: -320px 0 0 -320px;
+  z-index: 55;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(74, 147, 255, 0.3) 0%,
+    rgba(30, 111, 224, 0.16) 38%,
+    rgba(30, 111, 224, 0.05) 60%,
+    transparent 72%
+  );
+  filter: blur(42px);
+  animation: trailBreath 8s ease-in-out infinite;
+}
+
+.cursor-trail.is-visible {
+  opacity: 0.45;
+}
+
+/* ---- ядро: компактнее и приглушённее ---- */
 .cursor-glow {
   position: fixed;
   top: 0;
   left: 0;
-  width: 460px;
-  height: 460px;
-  margin: -230px 0 0 -230px;
+  width: 440px;
+  height: 440px;
+  margin: -220px 0 0 -220px;
   z-index: 60;
   pointer-events: none;
   opacity: 0;
   mix-blend-mode: screen;
   will-change: transform, opacity;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.35s ease;
 }
 
 .cursor-glow.is-visible {
-  opacity: 0.9;
+  opacity: 0.72;
 }
 
 .cursor-glow::before,
@@ -1255,27 +1299,39 @@ td code {
   inset: 0;
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(74, 147, 255, 0.5) 0%,
-    rgba(46, 120, 235, 0.32) 26%,
-    rgba(30, 111, 224, 0.16) 48%,
+    rgba(80, 150, 250, 0.42) 0%,
+    rgba(44, 118, 236, 0.27) 26%,
+    rgba(30, 111, 224, 0.14) 48%,
     rgba(30, 111, 224, 0.05) 64%,
-    transparent 74%
+    transparent 76%
   );
   filter: blur(26px);
   animation: glowBreathe 7s ease-in-out infinite;
 }
 
 .cursor-glow::after {
-  inset: 34%;
+  inset: 32%;
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(198, 226, 255, 0.9) 0%,
-    rgba(140, 190, 255, 0.42) 42%,
-    rgba(94, 160, 250, 0.14) 68%,
-    transparent 78%
+    rgba(198, 228, 255, 0.78) 0%,
+    rgba(150, 196, 255, 0.46) 40%,
+    rgba(96, 160, 250, 0.16) 68%,
+    transparent 80%
   );
-  filter: blur(14px);
+  filter: blur(12px);
   animation: glowShimmer 4.5s ease-in-out infinite;
+}
+
+@keyframes trailBreath {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.6;
+  }
 }
 
 @keyframes glowBreathe {
@@ -1283,11 +1339,11 @@ td code {
   100% {
     transform: scale(1);
     filter: blur(26px) hue-rotate(0deg);
-    opacity: 0.85;
+    opacity: 0.8;
   }
   50% {
-    transform: scale(1.09);
-    filter: blur(32px) hue-rotate(-16deg);
+    transform: scale(1.06);
+    filter: blur(30px) hue-rotate(-14deg);
     opacity: 1;
   }
 }
@@ -1296,31 +1352,64 @@ td code {
   0%,
   100% {
     transform: scale(1) translate(0, 0);
-    opacity: 0.75;
+    opacity: 0.7;
   }
   35% {
-    transform: scale(1.12) translate(3%, -3%);
-    opacity: 1;
+    transform: scale(1.09) translate(3%, -3%);
+    opacity: 0.95;
   }
   70% {
-    transform: scale(0.94) translate(-3%, 2%);
-    opacity: 0.6;
+    transform: scale(0.95) translate(-3%, 2%);
+    opacity: 0.55;
   }
 }
 
-@media (hover: none), (pointer: coarse) {
-  .cursor-glow {
-    display: none;
-  }
+/* ---- кастомный курсор в стиле сайта ---- */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: #7fb4ff;
+  box-shadow: 0 0 12px rgba(74, 147, 255, 0.8);
+  transition: opacity 0.25s ease;
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 2px solid rgba(90, 160, 250, 0.7);
+  transition: opacity 0.25s ease, border-color 0.2s ease;
+}
+
+.cursor-dot.is-visible,
+.cursor-ring.is-visible {
+  opacity: 0.9;
+}
+
+.cursor-ring.is-active {
+  border-color: #bfe0ff;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cursor-glow::before,
-  .cursor-glow::after {
+  .cursor-glow::after,
+  .cursor-trail {
     animation: none;
   }
 }
-
 /* ================= Адаптив ================= */
 @media (max-width: 1024px) {
   .hero__grid {
