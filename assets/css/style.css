@@ -1250,7 +1250,7 @@ label,
   width: 640px;
   height: 640px;
   margin: -320px 0 0 -320px;
-  z-index: 55;
+  z-index: 400;
   pointer-events: none;
   opacity: 0;
   mix-blend-mode: screen;
@@ -1279,7 +1279,7 @@ label,
   width: 440px;
   height: 440px;
   margin: -220px 0 0 -220px;
-  z-index: 60;
+  z-index: 405;
   pointer-events: none;
   opacity: 0;
   mix-blend-mode: screen;
