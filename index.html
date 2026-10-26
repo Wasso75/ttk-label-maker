@@ -485,7 +485,7 @@
               <div class="contact-item__body">
                 <p class="contact-item__label">Телефон для связи</p>
                 <p class="contact-item__value">
-                  <a class="contact-link" href="tel:+79216035175">8 921 603-51-75</a>
+                  <a class="contact-link contact-link--copy" data-copy="+79216035175" data-copy-label="Телефон скопирован" href="tel:+79216035175">8 921 603-51-75</a>
                 </p>
               </div>
             </div>
@@ -495,7 +495,7 @@
               <div class="contact-item__body">
                 <p class="contact-item__label">E-Mail</p>
                 <p class="contact-item__value">
-                  <a class="contact-link" href="mailto:Daniloff.Wasily@yandex.ru">Daniloff.Wasily@yandex.ru</a>
+                  <a class="contact-link contact-link--copy" data-copy="Daniloff.Wasily@yandex.ru" data-copy-label="E-mail скопирован" href="mailto:Daniloff.Wasily@yandex.ru">Daniloff.Wasily@yandex.ru</a>
                 </p>
               </div>
             </div>
@@ -766,6 +766,56 @@
         document.addEventListener('touchstart', stop, { passive: true });
         document.addEventListener('mouseleave', stop);
         window.addEventListener('blur', stop);
+      }
+
+      // Копирование email/телефона в буфер с краткой подписью
+      document.querySelectorAll('.contact-link--copy').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var text = link.getAttribute('data-copy') || '';
+          var label = link.getAttribute('data-copy-label') || 'Скопировано';
+
+          function copied() {
+            showCopyToast(e, label);
+          }
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(copied).catch(function () { fallbackCopy(text, link, copied); });
+          } else {
+            fallbackCopy(text, link, copied);
+          }
+        });
+      });
+
+      function fallbackCopy(text, link, done) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(ta);
+        done();
+      }
+
+      function showCopyToast(e, label) {
+        var toast = document.getElementById('copyToast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'copyToast';
+          toast.className = 'copy-toast';
+          document.body.appendChild(toast);
+        }
+        var x = (e && e.clientX) || window.innerWidth / 2;
+        var y = (e && e.clientY) || window.innerHeight / 2;
+        toast.textContent = label;
+        toast.style.left = x + 'px';
+        toast.style.top = y + 'px';
+        toast.classList.add('is-visible');
+        clearTimeout(toast._t);
+        toast._t = setTimeout(function () {
+          toast.classList.remove('is-visible');
+        }, 1600);
       }
     })();
   </script>
