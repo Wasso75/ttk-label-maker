@@ -960,6 +960,24 @@ td code {
   color: var(--text);
 }
 
+/* ================= Контакты ================= */
+.contact-link {
+  color: var(--accent-2);
+  font-weight: 700;
+  word-break: break-word;
+  transition: color 0.18s ease;
+}
+
+.contact-link:hover {
+  color: #7fb4ff;
+  text-decoration: underline;
+}
+
+.contacts__cta {
+  margin-top: 30px;
+  text-align: center;
+}
+
 /* ================= FAQ ================= */
 .faq {
   max-width: 860px;
