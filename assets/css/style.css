@@ -1119,13 +1119,21 @@ td code {
   font-size: 0.9rem;
 }
 
-/* Плавное раскрытие ответа — высоту анимирует JS через инлайн max-height */
+/* Плавное раскрытие ответа — высоту и padding анимирует JS */
 .faq details .faq__answer {
   display: block;
   overflow: hidden;
   opacity: 1;
   padding: 0 24px 22px;
-  transition: max-height 0.55s ease, opacity 0.35s ease;
+  transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1), padding 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+}
+
+.faq details .faq__answer.is-closed {
+  max-height: 0 !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Всплывающая подпись при копировании */

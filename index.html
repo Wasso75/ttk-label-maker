@@ -818,33 +818,47 @@
         }, 1600);
       }
 
-      // Плавное раскрытие/сворачивание FAQ через событие toggle
-      function faqAnimate(details) {
-        var body = details.querySelector('.faq__answer');
+      // Плавное раскрытие/сворачивание FAQ — управляем вручную (перехват клика),
+      // чтобы анимация шла плавно в обе стороны (нативный details скрывал мгновенно)
+      document.querySelectorAll('.faq details').forEach(function (detail) {
+        var body = detail.querySelector('.faq__answer');
         if (!body) return;
-        if (details.open) {
-          body.style.maxHeight = 'none';
+
+        // начальное состояние: если открыто (напр. восстановлено навигацией) — показать
+        function toOpen() {
+          body.classList.remove('is-closed');
           var h = body.scrollHeight;
-          body.style.maxHeight = '0px';
-          void body.offsetHeight;
           body.style.maxHeight = h + 'px';
-        } else {
+        }
+
+        function toClose() {
           body.style.maxHeight = body.scrollHeight + 'px';
           void body.offsetHeight;
+          body.classList.add('is-closed');
+          // после анимации реально закрываем details
+          clearTimeout(detail._t);
+          detail._t = setTimeout(function () {
+            detail.open = false;
+          }, 500);
+        }
+
+        if (detail.open) {
+          toOpen();
+        } else {
+          body.classList.add('is-closed');
           body.style.maxHeight = '0px';
         }
-      }
 
-      document.querySelectorAll('.faq details').forEach(function (detail) {
-        detail.addEventListener('toggle', function () {
-          faqAnimate(detail);
+        var summary = detail.querySelector('summary');
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (detail.open) {
+            toClose();
+          } else {
+            detail.open = true;
+            toOpen();
+          }
         });
-        if (detail.open) {
-          faqAnimate(detail);
-        } else {
-          var b = detail.querySelector('.faq__answer');
-          if (b) b.style.maxHeight = '0px';
-        }
       });
     })();
   </script>
