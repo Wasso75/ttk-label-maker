@@ -961,32 +961,35 @@ td code {
 }
 
 /* ================= Контакты ================= */
-.contacts-list {
-  display: grid;
-  gap: 14px;
-  max-width: 780px;
+.contact-card {
+  max-width: 860px;
   margin: 0 auto;
+  padding: 34px 38px;
+  background: linear-gradient(165deg, var(--surface-2) 0%, var(--surface) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
-.contact-item {
+.contact-card__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px 40px;
+}
+
+.contact-card__item {
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  padding: 20px 24px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.contact-item:hover {
-  border-color: var(--accent-line);
-  background: var(--surface-2);
+.contact-card__item--full {
+  grid-column: 1 / -1;
+  padding-top: 22px;
+  border-top: 1px solid rgba(27, 51, 82, 0.9);
 }
 
-.contact-item--note {
-  background: rgba(30, 111, 224, 0.06);
-  border-color: rgba(74, 147, 255, 0.22);
+.contact-card__item--full + .contact-card__item--full {
+  margin-top: -8px;
 }
 
 .contact-item__icon {
