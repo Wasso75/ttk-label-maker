@@ -664,6 +664,8 @@
 
   <button class="to-top" id="toTop" type="button" aria-label="Наверх">↑</button>
 
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
   <script>
     (function () {
       var toTop = document.getElementById('toTop');
@@ -705,6 +707,53 @@
           document.body.removeChild(link);
         });
       });
+
+      // Сияние, следующее за курсором
+      var glow = document.getElementById('cursorGlow');
+      var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (glow && fine) {
+        var tx = 0, ty = 0, cx = 0, cy = 0, raf = null, alive = false;
+
+        var move = function () {
+          cx += (tx - cx) * (calm ? 1 : 0.16);
+          cy += (ty - cy) * (calm ? 1 : 0.16);
+          glow.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+
+          if (Math.abs(tx - cx) > 0.4 || Math.abs(ty - cy) > 0.4) {
+            raf = requestAnimationFrame(move);
+          } else {
+            raf = null;
+          }
+        };
+
+        var start = function () {
+          if (!alive) {
+            alive = true;
+            cx = tx;
+            cy = ty;
+          }
+          glow.classList.add('is-visible');
+          if (raf === null) {
+            raf = requestAnimationFrame(move);
+          }
+        };
+
+        document.addEventListener('mousemove', function (e) {
+          tx = e.clientX;
+          ty = e.clientY;
+          start();
+        }, { passive: true });
+
+        document.addEventListener('mouseleave', function () {
+          glow.classList.remove('is-visible');
+        });
+
+        window.addEventListener('blur', function () {
+          glow.classList.remove('is-visible');
+        });
+      }
     })();
   </script>
 
