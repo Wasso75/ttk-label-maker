@@ -529,9 +529,6 @@ a {
   gap: 20px;
 }
 
-.cards--contacts {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
 
 .card {
   padding: 28px 24px;
@@ -965,6 +962,85 @@ td code {
 }
 
 /* ================= Контакты ================= */
+.contacts-list {
+  display: grid;
+  gap: 14px;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.contact-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.contact-item:hover {
+  border-color: var(--accent-line);
+  background: var(--surface-2);
+}
+
+.contact-item--note {
+  background: rgba(30, 111, 224, 0.06);
+  border-color: rgba(74, 147, 255, 0.22);
+}
+
+.contact-item__icon {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(74, 147, 255, 0.22);
+  font-size: 1.15rem;
+}
+
+.contact-item__body {
+  min-width: 0;
+}
+
+.contact-item__name {
+  color: #dce9ff;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.contact-item__role {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.contact-item__label {
+  margin-bottom: 4px;
+  color: var(--accent-2);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contact-item__value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.contact-item__text {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
 .contact-link {
   color: var(--accent-2);
   font-weight: 700;
@@ -975,21 +1051,6 @@ td code {
 .contact-link:hover {
   color: #7fb4ff;
   text-decoration: underline;
-}
-
-.card__person {
-  margin-bottom: 6px;
-  color: #dce9ff;
-  font-size: 0.87rem;
-  font-weight: 700;
-}
-
-.contacts__cta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 30px;
 }
 
 /* ================= FAQ ================= */
@@ -1211,8 +1272,7 @@ td code {
 
   .modules,
   .steps,
-  .downloads,
-  .cards--contacts {
+  .downloads {
     grid-template-columns: 1fr;
   }
 
