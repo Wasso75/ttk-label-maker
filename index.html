@@ -827,8 +827,12 @@
         // начальное состояние: если открыто (напр. восстановлено навигацией) — показать
         function toOpen() {
           body.classList.remove('is-closed');
-          var h = body.scrollHeight;
-          body.style.maxHeight = h + 'px';
+          body.style.maxHeight = '0px';
+          // ждём кадр, чтобы контент был отрендерен, потом замеряем и анимируем
+          requestAnimationFrame(function () {
+            var h = body.scrollHeight;
+            body.style.maxHeight = h + 'px';
+          });
         }
 
         function toClose() {
@@ -839,6 +843,7 @@
           clearTimeout(detail._t);
           detail._t = setTimeout(function () {
             detail.open = false;
+            body.style.maxHeight = '0px';
           }, 500);
         }
 
