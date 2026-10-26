@@ -174,7 +174,6 @@ a {
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0.01em;
-  cursor: pointer;
   transition: 0.22s ease;
   white-space: nowrap;
 }
@@ -1079,7 +1078,6 @@ td code {
   justify-content: space-between;
   gap: 16px;
   padding: 18px 24px;
-  cursor: pointer;
   list-style: none;
   font-weight: 600;
   font-size: 0.96rem;
@@ -1209,7 +1207,6 @@ td code {
   background: rgba(11, 26, 46, 0.92);
   color: var(--accent-2);
   font-size: 1.2rem;
-  cursor: pointer;
   backdrop-filter: blur(8px);
   transition: 0.2s ease;
 }
@@ -1235,8 +1232,9 @@ td code {
   input,
   select,
   textarea,
-  label,
+label,
   summary,
+  .faq summary,
   [data-file] {
     cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACEklEQVR42mNkgAAJIF4AxE5AfBmIE6A0zQEjlN4AxH6RkZGv9+7dK/Lq1aubQL4WPR3wLiQk5Nfq1asnFxcXR/f19WkCxQSA+CO9HPAR6Pt3y5Yt6ygoKEiZOHGiCVBMCIjf080BwcHBr9asWVOVkZFRMHPmTCu6O8DPz+/Fxo0bc4FRkASMgnCg2Cwg7gTie3RxgJeX17OtW7emXr58mTspKWnmmTNn5IHif4F4JxBPBeIdQPyPFg6QA+IbHh4eD7Zv3x4PZH/98OED6+zZs733798fuXv3bu0/f/6A1F0DYm8gfkBtB9wCYtWUlJRdQEsrgOxPQPwHiNmBWODw4cPmW7ZsCevt7bX++/fvaqBYOLUdcFtYWFjxxIkTCSoqKlcZIAnvBxAzAzE/EIv++vVLwcDAYOb169dB8sbUdkA+EE9IT0/fD8yCHRoaGndB0QCV4/3//78oMFGml5SUxAL5PUBcSm0H8DBA4lfW39//5IYNG9KgDvgPxNxdXV2x5eXlpdBoAZWOt6ntABAQBOIrtra2jIcOHYoBsr8wQFI8V15eXs3kyZNdgWwHID5ITcuRHQACdywsLESqq6tnAOP8OzDo/7OysrIDywb/efPmaYNCCIif0NIBM4A4HYe6x0CsDMS/aekAViCOAmJJNDUgS0HZ7xG1LUd3wICAUQeMOmDUAaMOGHXAqANGHTDgDgAAsxi5IfulRA4AAAAASUVORK5CYII=") 7 5, pointer;
   }
