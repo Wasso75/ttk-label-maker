@@ -817,6 +817,35 @@
           toast.classList.remove('is-visible');
         }, 1600);
       }
+
+      // Плавное раскрытие/сворачивание FAQ через событие toggle
+      function faqAnimate(details) {
+        var body = details.querySelector('.faq__answer');
+        if (!body) return;
+        if (details.open) {
+          body.style.maxHeight = 'none';
+          var h = body.scrollHeight;
+          body.style.maxHeight = '0px';
+          void body.offsetHeight;
+          body.style.maxHeight = h + 'px';
+        } else {
+          body.style.maxHeight = body.scrollHeight + 'px';
+          void body.offsetHeight;
+          body.style.maxHeight = '0px';
+        }
+      }
+
+      document.querySelectorAll('.faq details').forEach(function (detail) {
+        detail.addEventListener('toggle', function () {
+          faqAnimate(detail);
+        });
+        if (detail.open) {
+          faqAnimate(detail);
+        } else {
+          var b = detail.querySelector('.faq__answer');
+          if (b) b.style.maxHeight = '0px';
+        }
+      });
     })();
   </script>
 

@@ -1119,22 +1119,13 @@ td code {
   font-size: 0.9rem;
 }
 
-/* Плавное раскрытие ответа */
+/* Плавное раскрытие ответа — высоту анимирует JS через инлайн max-height */
 .faq details .faq__answer {
   display: block;
-  max-height: 0;
   overflow: hidden;
-  opacity: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  transition: max-height 0.6s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.5s ease, padding-top 0.5s ease, padding-bottom 0.5s ease;
-}
-
-.faq details[open] .faq__answer {
-  max-height: 400px;
   opacity: 1;
-  padding-top: 0;
-  padding-bottom: 22px;
+  padding: 0 24px 22px;
+  transition: max-height 0.55s ease, opacity 0.35s ease;
 }
 
 /* Всплывающая подпись при копировании */
