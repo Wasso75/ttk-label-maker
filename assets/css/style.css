@@ -651,6 +651,153 @@ a {
   font-weight: 700;
 }
 
+/* ================= Windows: клиент-редактор ================= */
+.win-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  align-items: start;
+  margin-bottom: 40px;
+}
+
+.win-shot {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.win-shot__frame {
+  position: relative;
+  padding: 8px;
+  border-radius: 16px;
+  background: linear-gradient(165deg, #1a3a5c 0%, #091322 100%);
+  border: 1px solid rgba(74, 147, 255, 0.26);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.win-shot__frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  aspect-ratio: 16 / 10.5;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease;
+}
+
+.win-shot:hover .win-shot__frame {
+  transform: translateY(-6px);
+  border-color: var(--accent-2);
+  box-shadow: 0 30px 60px rgba(30, 111, 224, 0.4);
+}
+
+.win-shot:hover .win-shot__frame img {
+  transform: scale(1.02);
+}
+
+.win-shot figcaption {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.win-shot figcaption strong {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.win-formats {
+  padding: 34px 30px 30px;
+  background: linear-gradient(165deg, var(--surface-2) 0%, var(--surface) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.win-formats__title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #dce9ff;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.win-formats__intro {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.98rem;
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+
+.win-formats__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+.win-fmt {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.win-fmt__frame {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(74, 147, 255, 0.2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.win-fmt__frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9.5;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.win-fmt:hover .win-fmt__frame {
+  transform: translateY(-5px);
+  border-color: var(--accent-2);
+  box-shadow: 0 24px 50px rgba(30, 111, 224, 0.38);
+}
+
+.win-fmt figcaption {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+  padding: 0 4px;
+}
+
+.win-fmt figcaption strong {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--accent-2);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.win-formats__note {
+  margin-top: 28px;
+  padding: 16px 20px;
+  border: 1px dashed rgba(74, 147, 255, 0.3);
+  border-radius: var(--radius);
+  background: rgba(30, 111, 224, 0.07);
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
 /* ================= Шаги ================= */
 .steps {
   display: grid;
