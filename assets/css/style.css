@@ -1433,6 +1433,10 @@ td code {
   cursor: zoom-out;
 }
 
+.lightbox[hidden] {
+  display: none;
+}
+
 .lightbox.is-open {
   animation: lightboxFade 0.22s ease;
 }
