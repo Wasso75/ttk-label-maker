@@ -499,5 +499,37 @@
     })();
   </script>
 
+
+  <script>
+    // Плавный переход между страницами (затухание)
+    (function () {
+      function isInternal(href) {
+        if (!href) return false;
+        if (href.charAt(0) === '#') return false;
+        if (/^(mailto:|tel:|download:)/i.test(href)) return false;
+        if (/^https?:\/\//i.test(href)) return href.indexOf(location.origin) === 0;
+        return true;
+      }
+
+      // затухание при появлении страницы
+      document.documentElement.classList.add('page-enter');
+
+      // прослушиваем клики по внутренним ссылкам
+      document.addEventListener('click', function (e) {
+        var a = e.target && e.target.closest ? e.target.closest('a') : null;
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href) return;
+        if (!/.html(?:#|$)/i.test(href)) return;
+        if (!isInternal(href)) return;
+        e.preventDefault();
+        document.body.classList.add('page-leave');
+        setTimeout(function () {
+          window.location.href = href;
+        }, 320);
+      }, true);
+    })();
+  </script>
+
 </body>
 </html>
