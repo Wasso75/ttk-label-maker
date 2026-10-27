@@ -58,9 +58,12 @@
       </nav>
 
       <button class="nav-toggle" id="navToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
-        <span class="nav-toggle__bar"></span>
-        <span class="nav-toggle__bar"></span>
-        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__icon">
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </span>
+        <span class="nav-toggle__label">Меню</span>
       </button>
 
       <div class="header__cta">
@@ -1009,22 +1012,36 @@
         });
       });
 
-      // Просмотр скриншотов на весь экран (светбокс) с закрытием по тапу и зумом
+      // Просмотр скриншотов на весь экран (светбокс) с зумом и перемещением
       var lightbox = document.getElementById('lightbox');
       var lightboxImg = document.getElementById('lightboxImg');
       var lightboxCaption = document.getElementById('lightboxCaption');
       var lightboxStage = document.getElementById('lightboxStage');
       if (lightbox && lightboxImg) {
         var zoomed = false;
+        var scale = 1;
+        var tx = 0, ty = 0;
+        var drag = null;
+        var pinch = null;
+        var lastTap = 0;
+
+        function applyTransform() {
+          lightboxImg.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+        }
+
+        function resetTransform() {
+          scale = 1; tx = 0; ty = 0;
+          zoomed = false;
+          applyTransform();
+          lightboxImg.style.transition = 'transform 0.2s ease';
+        }
 
         function openLightbox(src, caption, alt) {
           lightboxImg.src = src;
           lightboxImg.alt = alt || '';
           lightboxCaption.textContent = caption || '';
-          zoomed = false;
-          lightboxImg.style.transform = '';
-          lightboxImg.style.transition = 'transform 0.2s ease';
-          lightboxStage.classList.remove('is-zoomed');
+          lightboxImg.style.transition = 'none';
+          resetTransform();
           lightbox.hidden = false;
           lightbox.classList.add('is-open');
           document.body.style.overflow = 'hidden';
@@ -1033,10 +1050,6 @@
         function closeLightbox() {
           lightbox.hidden = true;
           lightbox.classList.remove('is-open');
-          zoomed = false;
-          lightboxImg.style.transform = '';
-          lightboxImg.style.transition = 'transform 0.2s ease';
-          lightboxStage.classList.remove('is-zoomed');
           document.body.style.overflow = '';
         }
 
@@ -1054,101 +1067,116 @@
           });
         });
 
-        // закрытие по тапу вне изображения или по крестику
-        lightbox.addEventListener('click', function (e) {
-          if (zoomed) {
-            zoomed = false;
-            lightboxStage.classList.remove('is-zoomed');
-            return;
-          }
-          if (e.target === lightbox || e.target === lightboxImg || e.target === lightboxCaption || e.target.closest('.lightbox__close')) {
-            closeLightbox();
-          }
-        });
-
+        // закрытие по крестику
         lightbox.querySelector('.lightbox__close').addEventListener('click', function (e) {
           e.stopPropagation();
           closeLightbox();
         });
 
-        // зум по тапу на изображение
-        lightboxImg.addEventListener('click', function (e) {
-          e.stopPropagation();
-          lightboxImg.style.transform = '';
-          if (zoomed) {
-            zoomed = false;
-            lightboxStage.classList.remove('is-zoomed');
-          } else {
-            zoomed = true;
-            lightboxStage.classList.add('is-zoomed');
+        // закрытие по клику на фон (вне изображения)
+        lightbox.addEventListener('click', function (e) {
+          if (e.target === lightbox) {
+            closeLightbox();
           }
         });
 
-        // зум колесом мыши (ПК)
+        // клик по изображению: если есть зум — сбросить его; иначе закрыть.
+        // После перетаскивания не закрываем (это был pan, а не тап).
+        lightboxImg.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (drag && drag.moved) return;
+          if (zoomed || scale > 1) {
+            resetTransform();
+          } else {
+            closeLightbox();
+          }
+        });
+
+        // колесо мыши (ПК): зум
         lightboxStage.addEventListener('wheel', function (e) {
           e.preventDefault();
           if (e.deltaY < 0) {
-            zoomed = true;
-            lightboxStage.classList.add('is-zoomed');
+            scale = Math.min(4, scale * 1.25);
           } else {
-            zoomed = false;
-            lightboxStage.classList.remove('is-zoomed');
+            scale = Math.max(1, scale / 1.25);
           }
+          zoomed = scale > 1;
+          lightboxImg.style.transition = 'transform 0.15s ease';
+          applyTransform();
         }, { passive: false });
 
-        // pinch-зум на тач-устройствах + перемещение (pan) увеличенного изображения
-        var touch = { dist: 0, active: false, pan: false, sx: 0, sy: 0, tx: 0, ty: 0 };
-        lightboxStage.addEventListener('touchstart', function (e) {
-          if (e.touches.length === 2) {
-            touch.active = true;
-            touch.pan = false;
-            var dx = e.touches[0].clientX - e.touches[1].clientX;
-            var dy = e.touches[0].clientY - e.touches[1].clientY;
-            touch.dist = Math.sqrt(dx * dx + dy * dy);
-            touch.tx = 0; touch.ty = 0;
+        // Pointer Events: работают и на мыши, и на пальцах
+        var pointers = {};
+
+        function pointerPos(e) {
+          return { x: e.clientX, y: e.clientY };
+        }
+
+        function getCenter() {
+          var pts = Object.keys(pointers).map(function (k) { return pointers[k]; });
+          var x = 0, y = 0;
+          for (var i = 0; i < pts.length; i++) { x += pts[i].x; y += pts[i].y; }
+          return { x: x / pts.length, y: y / pts.length };
+        }
+
+        function getPinchDist() {
+          var pts = Object.keys(pointers).map(function (k) { return pointers[k]; });
+          if (pts.length < 2) return 0;
+          var dx = pts[0].x - pts[1].x;
+          var dy = pts[0].y - pts[1].y;
+          return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        lightboxStage.addEventListener('pointerdown', function (e) {
+          pointers[e.pointerId] = pointerPos(e);
+          if (Object.keys(pointers).length === 1) {
+            drag = { sx: e.clientX, sy: e.clientY, tx0: tx, ty0: ty, moved: false };
+          } else if (Object.keys(pointers).length === 2) {
+            pinch = { dist0: getPinchDist(), scale0: scale };
+            // перемещение слишком малым -> тап
           }
-        }, { passive: true });
+          lightboxImg.style.transition = 'none';
+          try { lightboxStage.setPointerCapture(e.pointerId); } catch (err) {}
+        });
 
-        lightboxStage.addEventListener('touchmove', function (e) {
-          if (e.touches.length === 2) {
-            var dx = e.touches[0].clientX - e.touches[1].clientX;
-            var dy = e.touches[0].clientY - e.touches[1].clientY;
-            var dist = Math.sqrt(dx * dx + dy * dy);
-            if (touch.active) {
-              // pinch: меняем масштаб с сохранением текущего зума
-              if (dist > touch.dist + 14) {
-                zoomed = true;
-                lightboxStage.classList.add('is-zoomed');
-                touch.dist = dist;
-              } else if (dist < touch.dist - 24) {
-                zoomed = false;
-                lightboxStage.classList.remove('is-zoomed');
-                touch.dist = dist;
-              }
+        lightboxStage.addEventListener('pointermove', function (e) {
+          if (pointers[e.pointerId]) pointers[e.pointerId] = pointerPos(e);
+
+          if (pinch && Object.keys(pointers).length >= 2) {
+            var d = getPinchDist();
+            if (pinch.dist0 > 0) {
+              scale = Math.max(1, Math.min(5, pinch.scale0 * (d / pinch.dist0)));
             }
-            // pan: перемещение увеличенного изображения
-            var cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-            var cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-            if (zoomed && touch.pan) {
-              touch.tx += cx - touch.sx;
-              touch.ty += cy - touch.sy;
-              lightboxImg.style.transform = 'scale(1.8) translate(' + touch.tx + 'px,' + touch.ty + 'px)';
-            }
-            touch.sx = cx; touch.sy = cy;
-            touch.pan = true;
-            e.preventDefault();
+            zoomed = scale > 1;
+            applyTransform();
+            return;
           }
-        }, { passive: false });
 
-        lightboxStage.addEventListener('touchend', function () {
-          touch.active = false;
-          touch.pan = false;
-        }, { passive: true });
+          if (drag && Object.keys(pointers).length === 1) {
+            var dx = e.clientX - drag.sx;
+            var dy = e.clientY - drag.sy;
+            if (Math.abs(dx) > 4 || Math.abs(dy) > 4) drag.moved = true;
+            if (zoomed) {
+              tx = drag.tx0 + dx;
+              ty = drag.ty0 + dy;
+              applyTransform();
+            }
+          }
+        });
 
-        lightboxStage.addEventListener('touchcancel', function () {
-          touch.active = false;
-          touch.pan = false;
-        }, { passive: true });
+        function endPointer(e) {
+          delete pointers[e.pointerId];
+          if (Object.keys(pointers).length < 2) pinch = null;
+          if (Object.keys(pointers).length === 0) {
+            if (drag && !drag.moved && !zoomed) {
+              // тап на фон/изображение в обычном режиме
+            }
+            drag = null;
+          }
+        }
+
+        lightboxStage.addEventListener('pointerup', endPointer);
+        lightboxStage.addEventListener('pointercancel', endPointer);
 
         // закрытие по Esc
         document.addEventListener('keydown', function (e) {
