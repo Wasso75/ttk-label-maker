@@ -894,6 +894,100 @@ a {
   min-width: 260px;
 }
 
+/* ================= Просмотр скриншотов (lightbox) ================= */
+.win-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 6, 14, 0.96);
+}
+
+.win-lightbox[hidden] {
+  display: none;
+}
+
+.win-lightbox__toolbar {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(15, 27, 46, 0.92);
+  border: 1px solid var(--accent-line);
+  z-index: 5;
+}
+
+.win-lb-btn {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--accent-line);
+  background: var(--surface-2);
+  color: #fff;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.win-lb-btn:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
+
+.win-lb-btn--close {
+  background: rgba(120, 40, 40, 0.6);
+}
+
+.win-lightbox__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 94vw;
+  max-height: 92vh;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.win-lightbox__img {
+  max-width: 92vw;
+  max-height: 82vh;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+}
+
+.win-lightbox__caption {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 88vw;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: rgba(15, 27, 46, 0.9);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-align: center;
+  line-height: 1.5;
+  z-index: 4;
+}
+
 /* ================= Шаги ================= */
 .steps {
   display: grid;

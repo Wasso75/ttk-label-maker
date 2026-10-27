@@ -216,7 +216,19 @@
 
   <button class="to-top" id="toTop" type="button" aria-label="Наверх">↑</button>
 
-  <button class="to-top" id="toTop" type="button" aria-label="Наверх">↑</button>
+  <div class="win-lightbox" id="winLightbox" role="dialog" aria-modal="true" aria-label="Просмотр скриншота" hidden>
+    <div class="win-lightbox__toolbar">
+      <button type="button" class="win-lb-btn" id="winLbZoomOut" aria-label="Уменьшить">−</button>
+      <button type="button" class="win-lb-btn" id="winLbZoomIn" aria-label="Увеличить">+</button>
+      <button type="button" class="win-lb-btn" id="winLbPrev" aria-label="Предыдущий">&#8249;</button>
+      <button type="button" class="win-lb-btn" id="winLbNext" aria-label="Следующий">&#8250;</button>
+      <button type="button" class="win-lb-btn win-lb-btn--close" id="winLbClose" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="win-lightbox__stage" id="winLbStage">
+      <img class="win-lightbox__img" id="winLbImg" alt="" draggable="false">
+      <p class="win-lightbox__caption" id="winLbCaption"></p>
+    </div>
+  </div>
 
   <div class="cursor-trail" id="cursorTrail" aria-hidden="true"></div>
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
@@ -454,6 +466,92 @@
           });
         }
       });
+
+      // Просмотр скриншотов: зум колёсиком мыши, перетаскивание, кнопки + − < > Закрыть
+      var lb = document.getElementById('winLightbox');
+      var lbImg = document.getElementById('winLbImg');
+      var lbCap = document.getElementById('winLbCaption');
+      var lbStage = document.getElementById('winLbStage');
+      var lbImages = Array.prototype.slice.call(document.querySelectorAll('.win-shot__frame img, .win-fmt__frame img'));
+      var lbIndex = 0;
+      var lbScale = 1, lbTx = 0, lbTy = 0;
+      var dragState = null;
+
+      function lbApply() {
+        lbImg.style.transform = 'translate(' + lbTx + 'px,' + lbTy + 'px) scale(' + lbScale + ')';
+      }
+
+      function lbReset() { lbScale = 1; lbTx = 0; lbTy = 0; lbApply(); }
+
+      function lbShowAt(i) {
+        if (!lbImages.length) return;
+        lbIndex = (i + lbImages.length) % lbImages.length;
+        var img = lbImages[lbIndex];
+        lbImg.src = img.currentSrc || img.src;
+        var fig = img.closest('figure');
+        lbCap.textContent = fig ? (fig.querySelector('figcaption') ? fig.querySelector('figcaption').textContent.trim() : '') : '';
+        lbReset();
+        lbImg.style.transition = 'none';
+        lb.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+
+      function lbClose() {
+        lb.hidden = true;
+        document.body.style.overflow = '';
+      }
+
+      if (lb && lbImg && lbImages.length) {
+        // открытие по клику на любой скриншот/пример
+        lbImages.forEach(function (img) {
+          img.style.cursor = 'zoom-in';
+          img.addEventListener('click', function () {
+            lbShowAt(lbImages.indexOf(img));
+          });
+        });
+
+        // кнопки
+        document.getElementById('winLbClose').addEventListener('click', lbClose);
+        document.getElementById('winLbPrev').addEventListener('click', function (e) { e.stopPropagation(); lbShowAt(lbIndex - 1); });
+        document.getElementById('winLbNext').addEventListener('click', function (e) { e.stopPropagation(); lbShowAt(lbIndex + 1); });
+        document.getElementById('winLbZoomIn').addEventListener('click', function (e) { e.stopPropagation(); lbScale = Math.min(5, lbScale * 1.3); lbImg.style.transition = 'transform 0.15s ease'; lbApply(); });
+        document.getElementById('winLbZoomOut').addEventListener('click', function (e) { e.stopPropagation(); lbScale = Math.max(1, lbScale / 1.3); lbImg.style.transition = 'transform 0.15s ease'; lbApply(); });
+
+        // закрытие по клику на фон
+        lb.addEventListener('click', function (e) {
+          if (e.target === lb) lbClose();
+        });
+
+        // зум колёсиком мыши
+        lbStage.addEventListener('wheel', function (e) {
+          e.preventDefault();
+          if (e.deltaY < 0) lbScale = Math.min(5, lbScale * 1.2);
+          else lbScale = Math.max(1, lbScale / 1.2);
+          lbImg.style.transition = 'transform 0.1s ease';
+          lbApply();
+        }, { passive: false });
+
+        // перетаскивание мышью (только когда увеличен)
+        lbStage.addEventListener('mousedown', function (e) {
+          dragState = { x: e.clientX, y: e.clientY, tx0: lbTx, ty0: lbTy };
+          lbImg.style.transition = 'none';
+        });
+        document.addEventListener('mousemove', function (e) {
+          if (dragState && lbScale > 1) {
+            lbTx = dragState.tx0 + (e.clientX - dragState.x);
+            lbTy = dragState.ty0 + (e.clientY - dragState.y);
+            lbApply();
+          }
+        });
+        document.addEventListener('mouseup', function () { dragState = null; });
+
+        // закрытие по Esc
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && lb && !lb.hidden) lbClose();
+          if (e.key === 'ArrowLeft' && lb && !lb.hidden) lbShowAt(lbIndex - 1);
+          if (e.key === 'ArrowRight' && lb && !lb.hidden) lbShowAt(lbIndex + 1);
+        });
+      }
     })();
   </script>
 
