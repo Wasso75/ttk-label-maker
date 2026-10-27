@@ -48,6 +48,7 @@
 
       <nav id="mainNav">
         <ul class="nav">
+          <li><a href="#download">Скачать</a></li>
           <li><a href="#modules">Модули</a></li>
           <li><a href="#features">Возможности</a></li>
           <li><a href="#screens">Скриншоты</a></li>
@@ -255,6 +256,8 @@
           <p class="section__text">Реальные экраны версии 1.0 — без макетов и рендеров.</p>
         </div>
 
+        <p class="gallery-hint gallery-hint--top" aria-hidden="true"><span class="gallery-hint__icon">◂ ▸</span></p>
+
         <div class="gallery">
           <figure class="shot">
             <div class="shot__frame">
@@ -285,10 +288,7 @@
           </figure>
         </div>
 
-        <p class="gallery-hint" aria-hidden="true">
-          <span class="gallery-hint__icon">◂ ▸</span>
-          Листайте скриншоты влево и вправо
-        </p>
+        <p class="gallery-hint" aria-hidden="true"><span class="gallery-hint__icon">◂ ▸</span></p>
       </div>
     </section>
 
@@ -514,34 +514,34 @@
             </thead>
             <tbody>
               <tr>
-                <td>Операционная система</td>
-                <td>Android 8.0 и выше (API 26–34)</td>
-                <td>Windows 10 / 11, 64-бит</td>
+                <td data-label="Параметр">Операционная система</td>
+                <td data-label="Android-приложение">Android 8.0 и выше (API 26–34)</td>
+                <td data-label="Клиент для Windows">Windows 10 / 11, 64-бит</td>
               </tr>
               <tr>
-                <td>Файл</td>
-                <td><code>TTK-Label-DEMO-v1.0.apk</code></td>
-                <td><code>TTK-Label-Client.exe</code></td>
+                <td data-label="Параметр">Файл</td>
+                <td data-label="Android-приложение"><code>TTK-Label-DEMO-v1.0.apk</code></td>
+                <td data-label="Клиент для Windows"><code>TTK-Label-Client.exe</code></td>
               </tr>
               <tr>
-                <td>Размер</td>
-                <td>2,65 МБ</td>
-                <td>11,96 МБ</td>
+                <td data-label="Параметр">Размер</td>
+                <td data-label="Android-приложение">2,65 МБ</td>
+                <td data-label="Клиент для Windows">11,96 МБ</td>
               </tr>
               <tr>
-                <td>Интернет</td>
-                <td>Не обязателен: базы встроены, синхронизация — по желанию</td>
-                <td>Не нужен, только локальная сеть с телефоном</td>
+                <td data-label="Параметр">Интернет</td>
+                <td data-label="Android-приложение">Не обязателен: базы встроены, синхронизация — по желанию</td>
+                <td data-label="Клиент для Windows">Не нужен, только локальная сеть с телефоном</td>
               </tr>
               <tr>
-                <td>Оборудование</td>
-                <td>Термопринтер с Bluetooth: ESC/POS, TSPL, Niimbot D110</td>
-                <td>Сетевой адаптер Wi-Fi или Ethernet</td>
+                <td data-label="Параметр">Оборудование</td>
+                <td data-label="Android-приложение">Термопринтер с Bluetooth: ESC/POS, TSPL, Niimbot D110</td>
+                <td data-label="Клиент для Windows">Сетевой адаптер Wi-Fi или Ethernet</td>
               </tr>
               <tr>
-                <td>Разрешения</td>
-                <td>Bluetooth, камера (сканер штрих-кодов), файлы (XLSX)</td>
-                <td>Доступ к локальной сети</td>
+                <td data-label="Параметр">Разрешения</td>
+                <td data-label="Android-приложение">Bluetooth, камера (сканер штрих-кодов), файлы (XLSX)</td>
+                <td data-label="Клиент для Windows">Доступ к локальной сети</td>
               </tr>
             </tbody>
           </table>
@@ -780,14 +780,6 @@
 
   <button class="to-top" id="toTop" type="button" aria-label="Наверх">↑</button>
 
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр изображения" hidden>
-    <button class="lightbox__close" type="button" aria-label="Закрыть">✕</button>
-    <div class="lightbox__stage" id="lightboxStage">
-      <img class="lightbox__img" id="lightboxImg" alt="" draggable="false">
-      <p class="lightbox__caption" id="lightboxCaption"></p>
-    </div>
-  </div>
-
   <div class="cursor-trail" id="cursorTrail" aria-hidden="true"></div>
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
@@ -1012,179 +1004,18 @@
         });
       });
 
-      // Просмотр скриншотов на весь экран (светбокс) с зумом и перемещением
-      var lightbox = document.getElementById('lightbox');
-      var lightboxImg = document.getElementById('lightboxImg');
-      var lightboxCaption = document.getElementById('lightboxCaption');
-      var lightboxStage = document.getElementById('lightboxStage');
-      if (lightbox && lightboxImg) {
-        var zoomed = false;
-        var scale = 1;
-        var tx = 0, ty = 0;
-        var drag = null;
-        var pinch = null;
-        var lastTap = 0;
-
-        function applyTransform() {
-          lightboxImg.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
-        }
-
-        function resetTransform() {
-          scale = 1; tx = 0; ty = 0;
-          zoomed = false;
-          applyTransform();
-          lightboxImg.style.transition = 'transform 0.2s ease';
-        }
-
-        function openLightbox(src, caption, alt) {
-          lightboxImg.src = src;
-          lightboxImg.alt = alt || '';
-          lightboxCaption.textContent = caption || '';
-          lightboxImg.style.transition = 'none';
-          resetTransform();
-          lightbox.hidden = false;
-          lightbox.classList.add('is-open');
-          document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-          lightbox.hidden = true;
-          lightbox.classList.remove('is-open');
-          document.body.style.overflow = '';
-        }
-
-        // открытие по тапу/клику на скриншот
-        document.querySelectorAll('.gallery .shot__frame img, .win-shot__frame img, .win-fmt__frame img').forEach(function (img) {
-          img.style.cursor = 'zoom-in';
-          img.addEventListener('click', function (e) {
-            e.stopPropagation();
-            var fig = img.closest('.shot, .win-shot, .win-fmt');
-            var caption = '';
-            if (fig && fig.querySelector('figcaption')) {
-              caption = fig.querySelector('figcaption').textContent.trim();
-            }
-            openLightbox(img.currentSrc || img.src, caption, img.alt);
+      // Скриншоты: без открытия на весь экран, только подсветка при наведении/тапе
+      document.querySelectorAll('.gallery .shot__frame img, .win-shot__frame img, .win-fmt__frame img').forEach(function (img) {
+        var frame = img.closest('.shot__frame, .win-shot__frame, .win-fmt__frame');
+        if (frame) {
+          frame.addEventListener('mouseenter', function () {
+            frame.classList.add('is-hover');
           });
-        });
-
-        // закрытие по крестику
-        lightbox.querySelector('.lightbox__close').addEventListener('click', function (e) {
-          e.stopPropagation();
-          closeLightbox();
-        });
-
-        // закрытие по клику на фон (вне изображения)
-        lightbox.addEventListener('click', function (e) {
-          if (e.target === lightbox) {
-            closeLightbox();
-          }
-        });
-
-        // клик по изображению: если есть зум — сбросить его; иначе закрыть.
-        // После перетаскивания не закрываем (это был pan, а не тап).
-        lightboxImg.addEventListener('click', function (e) {
-          e.stopPropagation();
-          if (drag && drag.moved) return;
-          if (zoomed || scale > 1) {
-            resetTransform();
-          } else {
-            closeLightbox();
-          }
-        });
-
-        // колесо мыши (ПК): зум
-        lightboxStage.addEventListener('wheel', function (e) {
-          e.preventDefault();
-          if (e.deltaY < 0) {
-            scale = Math.min(4, scale * 1.25);
-          } else {
-            scale = Math.max(1, scale / 1.25);
-          }
-          zoomed = scale > 1;
-          lightboxImg.style.transition = 'transform 0.15s ease';
-          applyTransform();
-        }, { passive: false });
-
-        // Pointer Events: работают и на мыши, и на пальцах
-        var pointers = {};
-
-        function pointerPos(e) {
-          return { x: e.clientX, y: e.clientY };
+          frame.addEventListener('mouseleave', function () {
+            frame.classList.remove('is-hover');
+          });
         }
-
-        function getCenter() {
-          var pts = Object.keys(pointers).map(function (k) { return pointers[k]; });
-          var x = 0, y = 0;
-          for (var i = 0; i < pts.length; i++) { x += pts[i].x; y += pts[i].y; }
-          return { x: x / pts.length, y: y / pts.length };
-        }
-
-        function getPinchDist() {
-          var pts = Object.keys(pointers).map(function (k) { return pointers[k]; });
-          if (pts.length < 2) return 0;
-          var dx = pts[0].x - pts[1].x;
-          var dy = pts[0].y - pts[1].y;
-          return Math.sqrt(dx * dx + dy * dy);
-        }
-
-        lightboxStage.addEventListener('pointerdown', function (e) {
-          pointers[e.pointerId] = pointerPos(e);
-          if (Object.keys(pointers).length === 1) {
-            drag = { sx: e.clientX, sy: e.clientY, tx0: tx, ty0: ty, moved: false };
-          } else if (Object.keys(pointers).length === 2) {
-            pinch = { dist0: getPinchDist(), scale0: scale };
-            // перемещение слишком малым -> тап
-          }
-          lightboxImg.style.transition = 'none';
-          try { lightboxStage.setPointerCapture(e.pointerId); } catch (err) {}
-        });
-
-        lightboxStage.addEventListener('pointermove', function (e) {
-          if (pointers[e.pointerId]) pointers[e.pointerId] = pointerPos(e);
-
-          if (pinch && Object.keys(pointers).length >= 2) {
-            var d = getPinchDist();
-            if (pinch.dist0 > 0) {
-              scale = Math.max(1, Math.min(5, pinch.scale0 * (d / pinch.dist0)));
-            }
-            zoomed = scale > 1;
-            applyTransform();
-            return;
-          }
-
-          if (drag && Object.keys(pointers).length === 1) {
-            var dx = e.clientX - drag.sx;
-            var dy = e.clientY - drag.sy;
-            if (Math.abs(dx) > 4 || Math.abs(dy) > 4) drag.moved = true;
-            if (zoomed) {
-              tx = drag.tx0 + dx;
-              ty = drag.ty0 + dy;
-              applyTransform();
-            }
-          }
-        });
-
-        function endPointer(e) {
-          delete pointers[e.pointerId];
-          if (Object.keys(pointers).length < 2) pinch = null;
-          if (Object.keys(pointers).length === 0) {
-            if (drag && !drag.moved && !zoomed) {
-              // тап на фон/изображение в обычном режиме
-            }
-            drag = null;
-          }
-        }
-
-        lightboxStage.addEventListener('pointerup', endPointer);
-        lightboxStage.addEventListener('pointercancel', endPointer);
-
-        // закрытие по Esc
-        document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && lightbox && !lightbox.hidden) {
-            closeLightbox();
-          }
-        });
-      }
+      });
     })();
   </script>
 
