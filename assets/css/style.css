@@ -1846,9 +1846,7 @@ label,
   .footer__grid {
     grid-template-columns: 1fr 1fr;
   }
-}
 
-@media (max-width: 860px) {
   .nav {
     display: flex;
     position: fixed;
@@ -1976,6 +1974,37 @@ label,
   .to-top {
     right: 14px;
     bottom: 14px;
+  }
+
+  .win-showcase,
+  .win-formats__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .win-shot__frame img {
+    aspect-ratio: 16 / 10;
+  }
+
+  .license {
+    width: 100%;
+    padding: 24px 18px;
+  }
+
+  .license__list li {
+    padding-left: 46px;
+    font-size: 0.9rem;
+  }
+
+  .license__list li::before {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .license__meta,
+  .license__list li {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 }
 

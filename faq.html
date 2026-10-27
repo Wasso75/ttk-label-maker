@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Вопросы — TTK Label Maker</title>
+  <meta name="description" content="TTK Label Maker — Android-приложение для печати этикеток и технологических карт на термопринтере. 3942 продукта и 992 техкарты с нормами СанПиН и ГОСТ, QR-код, штрих-коды, печать по Bluetooth, редактор баз на Windows.">
+  <meta name="keywords" content="TTK Label Maker, этикетки, термопринтер, технологические карты, ТТК, СанПиН, ГОСТ, QR-код, Android, печать по Bluetooth, скачать APK">
+  <meta name="theme-color" content="#050a14">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TTK Label Maker — этикетки и техкарты с телефона">
+  <meta property="og:description" content="Печать этикеток и технологических карт прямо со смартфона. Готовые базы с нормами хранения, QR-код, Bluetooth-печать, Windows-редактор баз.">
+  <meta property="og:image" content="assets/img/app-icon.png">
+  <link rel="icon" type="image/png" href="assets/img/app-icon.png">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261026b">
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+      m[i].l = 1 * new Date();
+      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a);
+    })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(113813533, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/113813533" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+</head>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="index.html">
+        <img class="brand__icon" src="assets/img/app-icon.png" alt="Иконка TTK Label Maker" width="42" height="42">
+        <span>
+          <span class="brand__name">TTK Label Maker</span>
+          <span class="brand__sub">версия 1.0</span>
+        </span>
+      </a>
+
+      <nav id="mainNav">
+          <ul class="nav">
+            <li><a href="download.html">Скачать</a></li>
+            <li><a href="modules.html">Модули</a></li>
+            <li><a href="features.html">Возможности</a></li>
+            <li><a href="screens.html">Скриншоты</a></li>
+            <li><a href="pc.html">Для ПК</a></li>
+            <li><a href="contacts.html">Контакты</a></li>
+            <li><a href="license.html">Лицензионное соглашение</a></li>
+            <li><a class="is-active" href="faq.html">Вопросы</a></li>
+          </ul>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
+        <span class="nav-toggle__icon">
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </span>
+        <span class="nav-toggle__label">Меню</span>
+      </button>
+
+      <div class="header__cta">
+        <a class="btn btn--primary btn--sm" href="download.html">Скачать</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="section section--alt" id="faq">
+      <div class="container">
+        <div class="section__head">
+          <span class="section__eyebrow">Вопросы и ответы</span>
+          <h2 class="section__title">Частые вопросы</h2>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>Какие термопринтеры поддерживаются?</summary>
+            <div class="faq__answer">
+              Приложение печатает четырьмя способами: системный диалог Android, ESC/POS текстом
+              и растром, протокол TSPL. Отдельно реализована поддержка Niimbot D110 по BLE.
+              Если ваш принтер понимает ESC/POS или TSPL, он подойдёт.
+            </div>
+          </details>
+
+          <details>
+            <summary>Нужен ли интернет для работы?</summary>
+            <div class="faq__answer">
+              Нет. База продукции из 3942 позиций и база из 992 техкарт встроены в приложение.
+              Интернет нужен только для обновления баз из внешних источников — Роскачества,
+              ОКПД2 и tekhnolog.com.
+            </div>
+          </details>
+
+          <details>
+            <summary>Чем DEMO отличается от PRO?</summary>
+            <div class="faq__answer">
+              Функционально ничем: DEMO — это та же полная сборка, но с пробным периодом 10 дней
+              и обязательным лицензионным соглашением при первом запуске. По истечении срока печать
+              блокируется. В PRO ограничения по времени нет.
+            </div>
+          </details>
+
+          <details>
+            <summary>Как устанавливается APK?</summary>
+            <div class="faq__answer">
+              Скачайте файл на телефон, откройте его и подтвердите установку. Android попросит
+              разрешить установку из этого источника — это стандартное поведение для приложений,
+              которые распространяются не через магазин.
+            </div>
+          </details>
+
+          <details>
+            <summary>Как считается срок хранения?</summary>
+            <div class="faq__answer">
+              По справочникам СанПиН и ГОСТ, встроенным в приложение. Для техкарт срок берётся
+              из самой карты. Дополнительно действуют правила: пельмени и манты — только заморозка,
+              а для яиц, консервов, свежих овощей и фруктов, майонезов заморозка запрещена.
+            </div>
+          </details>
+
+          <details>
+            <summary>Зачем программа для Windows, если всё есть в телефоне?</summary>
+            <div class="faq__answer">
+              Набирать большие таблицы с телефона неудобно. Клиент показывает базы продукции,
+              техкарт и сотрудников в виде таблиц, позволяет править их на компьютере и отправлять
+              обратно на телефон по Wi-Fi. Отправляются только изменённые строки, поэтому правки,
+              сделанные на телефоне, не затираются.
+            </div>
+          </details>
+
+          <details>
+            <summary>Можно ли добавить свою продукцию или блюдо?</summary>
+            <div class="faq__answer">
+              Да. Позиции добавляются вручную в приложении либо загружаются из файла XLSX.
+              Пользовательские изменения хранятся отдельно от встроенной базы и не теряются
+              при обновлении.
+            </div>
+          </details>
+
+          <details>
+            <summary>Для кого это приложение?</summary>
+            <div class="faq__answer">
+              Для предприятий общественного питания и пищевого производства: столовых, кафе,
+              ресторанов, кулинарных цехов, кондитерских, а также для магазинов, которые торгуют
+              фермерской продукцией и весовым товаром.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand">
+            <img src="assets/img/app-icon.png" alt="" width="38" height="38" loading="lazy">
+            <span>TTK Label Maker</span>
+          </div>
+          <p>
+            Приложение для печати этикеток пищевой продукции и технологических карт блюд
+            на термопринтере. Версия 1.0, Android и Windows.
+          </p>
+        </div>
+
+        <div>
+          <h4>Продукт</h4>
+          <ul>
+            <li><a href="modules.html">Модули</a></li>
+            <li><a href="features.html">Возможности</a></li>
+            <li><a href="screens.html">Скриншоты</a></li>
+            <li><a href="download.html">Скачать</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Загрузки</h4>
+          <ul>
+            <li><a href="download/TTK-Label-DEMO-v1.0.apk">DEMO для Android</a></li>
+            <li><a href="download/TTK-Label-Client.exe" download>Клиент для Windows</a></li>
+            <li><a href="contacts.html">Полная версия по запросу</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Документация</h4>
+          <ul>
+            <li><a href="faq.html">Частые вопросы</a></li>
+            <li><a href="pc.html">Связь ПК и телефона</a></li>
+            <li><a href="download.html">Совместимость</a></li>
+            <li><a href="#contacts">Контакты</a></li>
+            <li><a href="license.html">Лицензионное соглашение</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <span>© 2026 TTK Label Maker. Все права защищены.</span>
+        <span>Этикетки соответствуют ТР ТС 022/2011, СанПиН и ГОСТ</span>
+      </div>
+
+      <div class="footer__stats" id="footerStats" aria-label="Статистика посещений">
+        <span class="footer__stat">
+          <b class="footer__stat-num" data-k="today">–</b>
+          <span class="footer__stat-lbl">За сегодня</span>
+        </span>
+        <span class="footer__stat">
+          <b class="footer__stat-num" data-k="month">–</b>
+          <span class="footer__stat-lbl">За месяц</span>
+        </span>
+        <span class="footer__stat">
+          <b class="footer__stat-num" data-k="total">–</b>
+          <span class="footer__stat-lbl">Всего</span>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Наверх">↑</button>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Наверх">↑</button>
+
+  <div class="cursor-trail" id="cursorTrail" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <script>
+    (function () {
+      var toTop = document.getElementById('toTop');
+
+      window.addEventListener('scroll', function () {
+        if (window.scrollY > 700) {
+          toTop.classList.add('is-visible');
+        } else {
+          toTop.classList.remove('is-visible');
+        }
+      }, { passive: true });
+
+      toTop.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Мобильное меню (гамбургер)
+      var navToggle = document.getElementById('navToggle');
+      var mainNav = document.getElementById('mainNav');
+      if (navToggle && mainNav) {
+        navToggle.addEventListener('click', function () {
+          var open = mainNav.classList.toggle('is-open');
+          navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          navToggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+        });
+
+        mainNav.addEventListener('click', function (e) {
+          if (e.target && e.target.tagName === 'A') {
+            mainNav.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.setAttribute('aria-label', 'Открыть меню');
+          }
+        });
+      }
+
+      document.querySelectorAll('[data-file]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var file = btn.getAttribute('data-file');
+          var isApk = /\.apk$/i.test(file);
+
+          if (isApk) {
+            window.location.href = file;
+            var box = document.getElementById('install');
+            if (box) {
+              box.classList.remove('is-highlight');
+              void box.offsetWidth;
+              box.classList.add('is-highlight');
+              box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+          }
+
+          var link = document.createElement('a');
+          link.href = file;
+          link.download = '';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
+      });
+
+      // Сияние и шлейф, следующие за курсором
+      var glow = document.getElementById('cursorGlow');
+      var trail = document.getElementById('cursorTrail');
+      var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+      if (glow && trail && fine) {
+        var tx = 0, ty = 0;
+        var s = { x: 0, y: 0 }, c = { x: 0, y: 0 };
+        var raf = null, alive = false;
+
+        var move = function () {
+          var k1 = calm ? 1 : 0.07;   // шлейф
+          var k2 = calm ? 1 : 0.2;    // ядро
+
+          s.x += (tx - s.x) * k1; s.y += (ty - s.y) * k1;
+          c.x += (tx - c.x) * k2; c.y += (ty - c.y) * k2;
+
+          trail.style.transform = 'translate3d(' + s.x.toFixed(1) + 'px,' + s.y.toFixed(1) + 'px,0)';
+          glow.style.transform = 'translate3d(' + c.x.toFixed(1) + 'px,' + c.y.toFixed(1) + 'px,0)';
+
+          if (Math.abs(tx - s.x) > 0.3 || Math.abs(ty - s.y) > 0.3 ||
+              Math.abs(tx - c.x) > 0.3 || Math.abs(ty - c.y) > 0.3) {
+            raf = requestAnimationFrame(move);
+          } else {
+            raf = null;
+          }
+        };
+
+        var start = function () {
+          if (!alive) {
+            alive = true;
+            s.x = tx; s.y = ty; c.x = tx; c.y = ty;
+          }
+          trail.classList.add('is-visible');
+          glow.classList.add('is-visible');
+          if (raf === null) {
+            raf = requestAnimationFrame(move);
+          }
+        };
+
+        var stop = function () {
+          trail.classList.remove('is-visible');
+          glow.classList.remove('is-visible');
+        };
+
+        document.addEventListener('mousemove', function (e) {
+          tx = e.clientX;
+          ty = e.clientY;
+          start();
+        }, { passive: true });
+
+        document.addEventListener('touchstart', stop, { passive: true });
+        document.addEventListener('mouseleave', stop);
+        window.addEventListener('blur', stop);
+      }
+
+      // Копирование email/телефона в буфер с краткой подписью
+      document.querySelectorAll('.contact-link--copy').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var text = link.getAttribute('data-copy') || '';
+          var label = link.getAttribute('data-copy-label') || 'Скопировано';
+
+          // Кнопка «Запросить полную версию»: клик копирует адрес, а не открывает почтовик
+          if (link.hasAttribute('data-tooltip')) {
+            e.preventDefault();
+          }
+
+          function copied() {
+            showCopyToast(e, label);
+          }
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(copied).catch(function () { fallbackCopy(text, link, copied); });
+          } else {
+            fallbackCopy(text, link, copied);
+          }
+        });
+      });
+
+      function fallbackCopy(text, link, done) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(ta);
+        done();
+      }
+
+      function showCopyToast(e, label) {
+        var toast = document.getElementById('copyToast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'copyToast';
+          toast.className = 'copy-toast';
+          document.body.appendChild(toast);
+        }
+        var x = (e && e.clientX) || window.innerWidth / 2;
+        var y = (e && e.clientY) || window.innerHeight / 2;
+        toast.textContent = label;
+        toast.style.left = x + 'px';
+        toast.style.top = y + 'px';
+        toast.classList.add('is-visible');
+        clearTimeout(toast._t);
+        toast._t = setTimeout(function () {
+          toast.classList.remove('is-visible');
+        }, 1600);
+      }
+
+      // Плавное раскрытие/сворачивание FAQ — управляем вручную (перехват клика),
+      // чтобы анимация шла плавно в обе стороны (нативный details скрывал мгновенно)
+      document.querySelectorAll('.faq details').forEach(function (detail) {
+        var body = detail.querySelector('.faq__answer');
+        if (!body) return;
+
+        // начальное состояние: если открыто (напр. восстановлено навигацией) — показать
+        function toOpen() {
+          body.classList.remove('is-closed');
+          body.style.maxHeight = '0px';
+          // ждём кадр, чтобы контент был отрендерен, потом замеряем и анимируем
+          requestAnimationFrame(function () {
+            var h = body.scrollHeight;
+            body.style.maxHeight = h + 'px';
+          });
+        }
+
+        function toClose() {
+          body.style.maxHeight = body.scrollHeight + 'px';
+          void body.offsetHeight;
+          body.classList.add('is-closed');
+          // после анимации реально закрываем details
+          clearTimeout(detail._t);
+          detail._t = setTimeout(function () {
+            detail.open = false;
+            body.style.maxHeight = '';
+          }, 500);
+        }
+
+        if (detail.open) {
+          toOpen();
+        } else {
+          body.classList.add('is-closed');
+          body.style.maxHeight = '0px';
+        }
+
+        var summary = detail.querySelector('summary');
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (detail.open) {
+            toClose();
+          } else {
+            detail.open = true;
+            toOpen();
+          }
+        });
+      });
+
+      // Скриншоты: без открытия на весь экран, только подсветка при наведении/тапе
+      document.querySelectorAll('.gallery .shot__frame img, .win-shot__frame img, .win-fmt__frame img').forEach(function (img) {
+        var frame = img.closest('.shot__frame, .win-shot__frame, .win-fmt__frame');
+        if (frame) {
+          frame.addEventListener('mouseenter', function () {
+            frame.classList.add('is-hover');
+          });
+          frame.addEventListener('mouseleave', function () {
+            frame.classList.remove('is-hover');
+          });
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    // Статистика посещений из Яндекс.Метрики (API)
+    (function () {
+      var CID = '113813533';
+      var TOKEN = 'y0__wgBEJ-TziwY8dtNIJLzoMUZBxt44lhW3Wht_YZVXOSJeooBLZM';
+      var box = document.getElementById('footerStats');
+      if (!box) return;
+
+      function fmt(n) {
+        n = Math.round(n || 0);
+        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      }
+
+      function set(key, val) {
+        var el = box.querySelector('[data-k="' + key + '"]');
+        if (el) el.textContent = fmt(val);
+      }
+
+      function load() {
+        var urlToday = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
+          '&metrics=ym:s:visits&date1=today&date2=today';
+        var d1 = new Date();
+        d1.setDate(d1.getDate() - 30);
+        var d1s = d1.toISOString().slice(0, 10);
+        var urlMonth = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
+          '&metrics=ym:s:visits&date1=' + d1s + '&date2=today';
+        var urlTotal = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
+          '&metrics=ym:s:visits&date1=2026-01-01&date2=today';
+
+        function get(u, cb) {
+          fetch(u, { headers: { 'Authorization': 'OAuth ' + TOKEN } })
+            .then(function (r) { return r.json(); })
+            .then(function (j) { cb((j && j.totals) ? j.totals[0] : 0); })
+            .catch(function () { cb(0); });
+        }
+
+        get(urlToday, function (v) { set('today', v); });
+        get(urlMonth, function (v) { set('month', v); });
+        get(urlTotal, function (v) { set('total', v); });
+      }
+
+      load();
+    })();
+  </script>
+
+</body>
+</html>
