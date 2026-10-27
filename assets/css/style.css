@@ -884,6 +884,16 @@ a {
   text-align: center;
 }
 
+.win-download {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.win-download .btn {
+  min-width: 260px;
+}
+
 /* ================= Шаги ================= */
 .steps {
   display: grid;
