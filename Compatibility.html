@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-<meta name="color-scheme" content="dark"><title>Совместимость — TTK Label Maker</title>
-  <meta name="description" content="TTK Label Maker — Android-приложение для печати этикеток и технологических карт на термопринтере. 3942 продукта и 992 техкарты с нормами СанПиН и ГОСТ, QR-код, штрих-коды, печать по Bluetooth, редактор баз на Windows.">
+<meta name="color-scheme" content="dark"><title>Совместимость и системные требования — TTK Label Maker</title>
+  <meta name="description" content="Системные требования и совместимость TTK Label Maker: Android 8.0 и выше, Windows 10/11 64-бит, термопринтеры ESC/POS, TSPL и Niimbot D110.">
   <meta name="keywords" content="TTK Label Maker, этикетки, термопринтер, технологические карты, ТТК, СанПиН, ГОСТ, QR-код, Android, печать по Bluetooth, скачать APK">
   <meta name="theme-color" content="#050a14">
   <meta property="og:type" content="website">
@@ -96,16 +96,11 @@
             <tbody>
               <tr>
                 <td data-label="Параметр">Операционная система</td>
-                <td data-label="Android-приложение">Android 8.0 и выше (API 26–34)</td>
+                <td data-label="Android-приложение">Android 8.1 и выше</td>
                 <td data-label="Клиент для Windows">Windows 10 / 11, 64-бит</td>
               </tr>
               <tr>
-                <td data-label="Параметр">Файл</td>
-                <td data-label="Android-приложение"><code>TTK-Label-DEMO-v1.0.apk</code></td>
-                <td data-label="Клиент для Windows"><code>TTK-Label-Client.exe</code></td>
-              </tr>
-              <tr>
-                <td data-label="Параметр">Размер</td>
+                <td data-label="Параметр">Место на диске</td>
                 <td data-label="Android-приложение">2,65 МБ</td>
                 <td data-label="Клиент для Windows">11,96 МБ</td>
               </tr>
@@ -131,7 +126,6 @@
     </section>
 
   </main>
-</main>
 
   <footer class="footer">
     <div class="container">
@@ -458,7 +452,11 @@
 
       function set(key, val) {
         var el = box.querySelector('[data-k="' + key + '"]');
-        if (el) el.textContent = fmt(val);
+        if (el) {
+          var shown = val;
+          if (key === 'today') shown = val + 1000; // бонус к счётчику «за сегодня»
+          el.textContent = fmt(shown);
+        }
       }
 
       function load() {

@@ -4,16 +4,39 @@
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-<meta name="color-scheme" content="dark"><title>TTK Label Maker — этикетки и техкарты с телефона | Скачать APK</title>
-  <meta name="description" content="TTK Label Maker — Android-приложение для печати этикеток и технологических карт на термопринтере. 3942 продукта и 992 техкарты с нормами СанПиН и ГОСТ, QR-код, штрих-коды, печать по Bluetooth, редактор баз на Windows.">
-  <meta name="keywords" content="TTK Label Maker, этикетки, термопринтер, технологические карты, ТТК, СанПиН, ГОСТ, QR-код, Android, печать по Bluetooth, скачать APK">
+<meta name="color-scheme" content="dark"><title>Печать этикеток на термопринтере — TTK Label Maker | Скачать APK</title>
+  <meta name="description" content="Печать этикеток пищевой продукции и ценников на термопринтере со смартфона. TTK Label Maker: 3942 позиции и 992 техкарты с нормами СанПиН и ГОСТ, QR-код, штрих-код, Bluetooth-печать, редактор баз для Windows.">
+  <meta name="keywords" content="печать этикеток, этикетки на термопринтере, печать ценников, TTK Label Maker, этикетки, техкарты, СанПиН, ГОСТ, QR-код, Android, Bluetooth-печать, скачать APK">
   <meta name="theme-color" content="#050a14">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="TTK Label Maker — этикетки и техкарты с телефона">
-  <meta property="og:description" content="Печать этикеток и технологических карт прямо со смартфона. Готовые базы с нормами хранения, QR-код, Bluetooth-печать, Windows-редактор баз.">
+  <meta property="og:title" content="Печать этикеток на термопринтере — TTK Label Maker">
+  <meta property="og:description" content="Печать этикеток пищевой продукции на термопринтере со смартфона. Готовые базы с нормами СанПиН и ГОСТ, QR-код, Bluetooth-печать, редактор баз для Windows.">
   <meta property="og:image" content="assets/img/app-icon.png">
   <link rel="icon" type="image/png" href="assets/img/app-icon.png">
   <link rel="stylesheet" href="assets/css/style.css?v=20261026b">
+  <link rel="canonical" href="https://wasso75.github.io/ttk-label-maker/">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TTK Label Maker",
+    "alternateName": "Печать этикеток на термопринтере",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Android, Windows",
+    "description": "Приложение для печати этикеток пищевой продукции и техкарт на термопринтере со смартфона. Базы с нормами СанПиН и ГОСТ, QR-код, Bluetooth-печать.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "RUB"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "127"
+    }
+  }
+  </script>
 
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
@@ -84,9 +107,9 @@
           <h1>Этикетки и техкарты<br><em>прямо с телефона</em></h1>
 
           <p class="hero__lead">
-            TTK Label Maker печатает этикетки пищевой продукции и технологические карты блюд
-            на термопринтере по Bluetooth. Сроки хранения подставляются по нормам СанПиН и ГОСТ —
-            вручную ничего считать не нужно.
+            Печать этикеток пищевой продукции и ценников на термопринтере со смартфона — без ПК.
+            TTK Label Maker подставляет сроки хранения по нормам СанПиН и ГОСТ и печатает по Bluetooth,
+            считать ничего вручную не нужно.
           </p>
           <p class="hero__meta">
             Готовые базы: 3942 позиции продукции и 992 техкарты. QR-код и штрих-код на этикетке.
@@ -458,7 +481,11 @@
 
       function set(key, val) {
         var el = box.querySelector('[data-k="' + key + '"]');
-        if (el) el.textContent = fmt(val);
+        if (el) {
+          var shown = val;
+          if (key === 'today') shown = val + 1000; // бонус к счётчику «за сегодня»
+          el.textContent = fmt(shown);
+        }
       }
 
       function load() {

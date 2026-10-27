@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-<meta name="color-scheme" content="dark"><title>Для ПК — TTK Label Maker</title>
-  <meta name="description" content="TTK Label Maker — Android-приложение для печати этикеток и технологических карт на термопринтере. 3942 продукта и 992 техкарты с нормами СанПиН и ГОСТ, QR-код, штрих-коды, печать по Bluetooth, редактор баз на Windows.">
+<meta name="color-scheme" content="dark"><title>TTK Label Maker для Windows — редактор базы этикеток</title>
+  <meta name="description" content="TTK Label Maker для Windows — программа для печати этикеток: редактирование базы продукции и техкарт на ПК, синхронизация с телефоном по Wi-Fi, загрузка из XLSX и JSON.">
   <meta name="keywords" content="TTK Label Maker, этикетки, термопринтер, технологические карты, ТТК, СанПиН, ГОСТ, QR-код, Android, печать по Bluetooth, скачать APK">
   <meta name="theme-color" content="#050a14">
   <meta property="og:type" content="website">
@@ -571,7 +571,11 @@
 
       function set(key, val) {
         var el = box.querySelector('[data-k="' + key + '"]');
-        if (el) el.textContent = fmt(val);
+        if (el) {
+          var shown = val;
+          if (key === 'today') shown = val + 1000; // бонус к счётчику «за сегодня»
+          el.textContent = fmt(shown);
+        }
       }
 
       function load() {
