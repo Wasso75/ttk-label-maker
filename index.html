@@ -46,16 +46,22 @@
         </span>
       </a>
 
-      <nav>
+      <nav id="mainNav">
         <ul class="nav">
           <li><a href="#modules">Модули</a></li>
           <li><a href="#features">Возможности</a></li>
           <li><a href="#screens">Скриншоты</a></li>
-          <li><a href="#windows">Для ПК</a></li>
+          <li><a href="#windows-app">Для ПК</a></li>
           <li><a href="#contacts">Контакты</a></li>
           <li><a href="#faq">Вопросы</a></li>
         </ul>
       </nav>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
 
       <div class="header__cta">
         <a class="btn btn--primary btn--sm" href="#download">Скачать</a>
@@ -275,6 +281,11 @@
             <figcaption><strong>Печать и база</strong>Bluetooth, синхронизация</figcaption>
           </figure>
         </div>
+
+        <p class="gallery-hint" aria-hidden="true">
+          <span class="gallery-hint__icon">◂ ▸</span>
+          Листайте скриншоты влево и вправо
+        </p>
       </div>
     </section>
 
@@ -766,6 +777,14 @@
 
   <button class="to-top" id="toTop" type="button" aria-label="Наверх">↑</button>
 
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр изображения" hidden>
+    <button class="lightbox__close" type="button" aria-label="Закрыть">✕</button>
+    <div class="lightbox__stage" id="lightboxStage">
+      <img class="lightbox__img" id="lightboxImg" alt="" draggable="false">
+      <p class="lightbox__caption" id="lightboxCaption"></p>
+    </div>
+  </div>
+
   <div class="cursor-trail" id="cursorTrail" aria-hidden="true"></div>
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
@@ -784,6 +803,25 @@
       toTop.addEventListener('click', function () {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
+
+      // Мобильное меню (гамбургер)
+      var navToggle = document.getElementById('navToggle');
+      var mainNav = document.getElementById('mainNav');
+      if (navToggle && mainNav) {
+        navToggle.addEventListener('click', function () {
+          var open = mainNav.classList.toggle('is-open');
+          navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          navToggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+        });
+
+        mainNav.addEventListener('click', function (e) {
+          if (e.target && e.target.tagName === 'A') {
+            mainNav.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.setAttribute('aria-label', 'Открыть меню');
+          }
+        });
+      }
 
       document.querySelectorAll('[data-file]').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -970,6 +1008,123 @@
           }
         });
       });
+
+      // Просмотр скриншотов на весь экран (светбокс) с закрытием по тапу и зумом
+      var lightbox = document.getElementById('lightbox');
+      var lightboxImg = document.getElementById('lightboxImg');
+      var lightboxCaption = document.getElementById('lightboxCaption');
+      var lightboxStage = document.getElementById('lightboxStage');
+      if (lightbox && lightboxImg) {
+        var zoomed = false;
+
+        function openLightbox(src, caption, alt) {
+          lightboxImg.src = src;
+          lightboxImg.alt = alt || '';
+          lightboxCaption.textContent = caption || '';
+          zoomed = false;
+          lightboxStage.classList.remove('is-zoomed');
+          lightbox.hidden = false;
+          lightbox.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+          lightbox.hidden = true;
+          lightbox.classList.remove('is-open');
+          zoomed = false;
+          lightboxStage.classList.remove('is-zoomed');
+          document.body.style.overflow = '';
+        }
+
+        // открытие по тапу/клику на скриншот
+        document.querySelectorAll('.gallery .shot__frame img, .win-shot__frame img, .win-fmt__frame img').forEach(function (img) {
+          img.style.cursor = 'zoom-in';
+          img.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var fig = img.closest('.shot, .win-shot, .win-fmt');
+            var caption = '';
+            if (fig && fig.querySelector('figcaption')) {
+              caption = fig.querySelector('figcaption').textContent.trim();
+            }
+            openLightbox(img.currentSrc || img.src, caption, img.alt);
+          });
+        });
+
+        // закрытие по тапу вне изображения или по крестику
+        lightbox.addEventListener('click', function (e) {
+          if (zoomed) {
+            zoomed = false;
+            lightboxStage.classList.remove('is-zoomed');
+            return;
+          }
+          if (e.target === lightbox || e.target === lightboxImg || e.target === lightboxCaption || e.target.closest('.lightbox__close')) {
+            closeLightbox();
+          }
+        });
+
+        lightbox.querySelector('.lightbox__close').addEventListener('click', function (e) {
+          e.stopPropagation();
+          closeLightbox();
+        });
+
+        // зум по тапу/двойному клику на изображение
+        lightboxImg.addEventListener('click', function (e) {
+          e.stopPropagation();
+          zoomed = !zoomed;
+          lightboxStage.classList.toggle('is-zoomed', zoomed);
+        });
+
+        // зум колесом мыши (ПК)
+        lightboxStage.addEventListener('wheel', function (e) {
+          e.preventDefault();
+          if (e.deltaY < 0) {
+            zoomed = true;
+            lightboxStage.classList.add('is-zoomed');
+          } else {
+            zoomed = false;
+            lightboxStage.classList.remove('is-zoomed');
+          }
+        }, { passive: false });
+
+        // pinch-зум на тач-устройствах
+        var pinch = { dist: 0, active: false };
+        lightboxStage.addEventListener('touchstart', function (e) {
+          if (e.touches.length === 2) {
+            pinch.active = true;
+            var dx = e.touches[0].clientX - e.touches[1].clientX;
+            var dy = e.touches[0].clientY - e.touches[1].clientY;
+            pinch.dist = Math.sqrt(dx * dx + dy * dy);
+          }
+        }, { passive: true });
+
+        lightboxStage.addEventListener('touchmove', function (e) {
+          if (pinch.active && e.touches.length === 2) {
+            var dx = e.touches[0].clientX - e.touches[1].clientX;
+            var dy = e.touches[0].clientY - e.touches[1].clientY;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist > pinch.dist + 12) {
+              zoomed = true;
+              lightboxStage.classList.add('is-zoomed');
+              pinch.dist = dist;
+            } else if (dist < pinch.dist - 24) {
+              zoomed = false;
+              lightboxStage.classList.remove('is-zoomed');
+              pinch.dist = dist;
+            }
+          }
+        }, { passive: true });
+
+        lightboxStage.addEventListener('touchend', function () {
+          pinch.active = false;
+        }, { passive: true });
+
+        // закрытие по Esc
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && lightbox && !lightbox.hidden) {
+            closeLightbox();
+          }
+        });
+      }
     })();
   </script>
 
