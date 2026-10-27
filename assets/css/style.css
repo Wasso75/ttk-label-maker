@@ -1251,7 +1251,7 @@ td code {
 
 .contact-card__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 26px 40px;
 }
 
@@ -1259,6 +1259,7 @@ td code {
   display: flex;
   gap: 16px;
   align-items: flex-start;
+  min-width: 0;
 }
 
 .contact-card__item--full {
@@ -2019,5 +2020,54 @@ label,
     text-transform: uppercase;
     color: var(--accent-2);
     margin-bottom: 4px;
+  }
+
+  /* Контакты: одна колонка, карточка по ширине экрана */
+  .contact-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px 18px;
+    margin: 0 auto;
+    border-radius: var(--radius);
+  }
+
+  .contact-card__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .contact-card__item {
+    gap: 12px;
+  }
+
+  .contact-card__item--full {
+    padding-top: 18px;
+  }
+
+  .contact-card__item--full + .contact-card__item--full {
+    margin-top: 0;
+  }
+
+  .contact-item__body {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .contact-item__value,
+  .contact-item__text,
+  .contact-item__name {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .contact-item__icon {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .contact-link {
+    overflow-wrap: anywhere;
   }
 }
