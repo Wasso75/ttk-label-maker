@@ -1173,6 +1173,13 @@ a {
   font-weight: 700;
 }
 
+.dl__price {
+  margin: 16px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
 .dl .btn {
   margin-top: 16px;
 }
