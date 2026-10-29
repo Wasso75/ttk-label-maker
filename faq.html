@@ -498,7 +498,6 @@
         var el = box.querySelector('[data-k="' + key + '"]');
         if (el) {
           var shown = val;
-          if (key === 'today') shown = val + 1000; // бонус к счётчику «за сегодня»
           el.textContent = fmt(shown);
         }
       }
