@@ -614,6 +614,9 @@ a {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   transition: 0.22s ease;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .card:hover {
@@ -624,10 +627,11 @@ a {
 .card__icon {
   width: 46px;
   height: 46px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  margin: 0 14px 0 0;
   border-radius: 12px;
   background: var(--accent-soft);
   border: 1px solid rgba(74, 147, 255, 0.22);
@@ -635,14 +639,17 @@ a {
 }
 
 .card h3 {
+  flex: 1 1 auto;
   font-size: 1.04rem;
   font-weight: 700;
   color: #dce9ff;
-  margin-bottom: 8px;
+  margin: 0;
   line-height: 1.35;
 }
 
 .card p {
+  flex: 0 0 100%;
+  margin-top: 12px;
   color: var(--text-dim);
   font-size: 0.88rem;
 }
