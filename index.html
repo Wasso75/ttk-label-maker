@@ -490,8 +490,10 @@
       }
 
       function load() {
+        var _now = new Date();
+        var todayStr = _now.getFullYear() + '-' + String(_now.getMonth() + 1).padStart(2, '0') + '-' + String(_now.getDate()).padStart(2, '0');
         var urlToday = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
-          '&metrics=ym:s:visits&date1=today&date2=today';
+          '&metrics=ym:s:visits&date1=' + todayStr + '&date2=' + todayStr + '&group=day&dimensions=ym:s:date';
         var d1 = new Date();
         d1.setDate(d1.getDate() - 30);
         var d1s = d1.toISOString().slice(0, 10);
