@@ -1527,17 +1527,6 @@ td code {
   margin-bottom: 24px;
 }
 
-.license__subtitle {
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #dce9ff;
-  margin: 26px 0 22px;
-  padding-top: 26px;
-  border-top: 1px solid rgba(51, 82, 124, 0.8);
-}
-
 .license__meta {
   padding-top: 24px;
   border-top: 1px solid rgba(51, 82, 124, 0.8);
