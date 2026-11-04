@@ -1750,6 +1750,21 @@ td code {
   color: var(--muted);
 }
 
+.footer__legal {
+  flex: 1 1 100%;
+  line-height: 1.55;
+  text-align: right;
+}
+
+.footer__legal a {
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.footer__legal a:hover {
+  text-decoration: underline;
+}
+
 .footer__stats {
   display: flex;
   flex-wrap: wrap;
@@ -2165,6 +2180,10 @@ label,
 }
 
 @media (max-width: 820px) {
+  .footer__legal {
+    text-align: left;
+  }
+
   .table-wrap {
     overflow: hidden;
   }
