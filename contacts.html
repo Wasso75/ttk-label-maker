@@ -212,7 +212,7 @@
         </span>
         <span class="footer__stat">
           <b class="footer__stat-num" data-k="total">–</b>
-          <span class="footer__stat-lbl">Всего</span>
+          <span class="footer__stat-lbl">За год</span>
         </span>
       </div>
     </div>
@@ -488,12 +488,12 @@
         var urlToday = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
           '&metrics=ym:s:visits&date1=' + todayStr + '&date2=' + todayStr + '&group=day&dimensions=ym:s:date';
         var d1 = new Date();
-        d1.setDate(d1.getDate() - 30);
-        var d1s = d1.toISOString().slice(0, 10);
+        d1.setDate(1);
+        var d1s = d1.getFullYear() + '-' + String(d1.getMonth() + 1).padStart(2, '0') + '-01';
         var urlMonth = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
           '&metrics=ym:s:visits&date1=' + d1s + '&date2=today';
         var urlTotal = 'https://api-metrika.yandex.net/stat/v1/data?ids=' + CID +
-          '&metrics=ym:s:visits&date1=2026-01-01&date2=today';
+          '&metrics=ym:s:visits&date1=' + _now.getFullYear() + '-01-01&date2=today';
 
         function get(u, cb) {
           fetch(u, { headers: { 'Authorization': 'OAuth ' + TOKEN } })
