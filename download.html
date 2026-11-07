@@ -292,12 +292,26 @@
         });
       }
 
+      // Счётчик скачиваний: событие уходит на сервер лицензий, навигацию не ждёт.
+      var DOWNLOAD_STATS_URL = 'https://d5dnj41npos4upevgqf8.jki8ffxa.apigw.yandexcloud.net/api/download';
+      function trackDownload(src) {
+        try {
+          var url = DOWNLOAD_STATS_URL + '?src=' + encodeURIComponent(src);
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon(url, '');
+            return;
+          }
+          fetch(url, { method: 'POST', body: '', keepalive: true, mode: 'no-cors' }).catch(function () {});
+        } catch (e) { /* счётчик не должен мешать скачиванию */ }
+      }
+
       document.querySelectorAll('[data-file]').forEach(function (btn) {
         btn.addEventListener('click', function () {
           var file = btn.getAttribute('data-file');
           var isApk = /\.apk$/i.test(file);
 
           if (isApk) {
+            trackDownload('demo');
             window.location.href = file;
             var box = document.getElementById('install');
             if (box) {
